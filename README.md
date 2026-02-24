@@ -186,7 +186,7 @@ firefly-theme/
 │   └── icon128.png        # 128×128 图标
 └── images/                # 背景图片文件夹
     ├── README.md          # 背景图片说明
-    └── background.png     # 背景图片（需自行添加）
+    └── background.png     # 背景图片（可自行更换）
 ```
 
 ---
