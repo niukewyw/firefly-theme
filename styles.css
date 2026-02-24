@@ -1,0 +1,147 @@
+:root {
+  --firefly-primary: #00ff88;
+  --firefly-secondary: #00cc6a;
+  --firefly-accent: #66ffaa;
+  --firefly-glow: rgba(0, 255, 136, 0.3);
+  --firefly-glow-strong: rgba(0, 255, 136, 0.6);
+  --background-opacity: 0.15;
+}
+
+html {
+  filter: brightness(1.05) saturate(1.1);
+}
+
+body {
+  position: relative;
+}
+
+.firefly-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 999996;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  opacity: var(--background-opacity);
+  transition: opacity 0.5s ease;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 999999;
+  background: radial-gradient(ellipse at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+    var(--firefly-glow) 0%, 
+    transparent 40%);
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+a:hover {
+  color: var(--firefly-primary) !important;
+  text-shadow: 0 0 10px var(--firefly-glow-strong);
+  transition: all 0.3s ease;
+}
+
+button:hover,
+input[type="button"]:hover,
+input[type="submit"]:hover {
+  box-shadow: 0 0 15px var(--firefly-glow-strong), 
+              inset 0 0 10px var(--firefly-glow);
+  transition: all 0.3s ease;
+}
+
+.firefly-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 999998;
+}
+
+.firefly-particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: firefly-fade 1s ease-out forwards;
+}
+
+@keyframes firefly-fade {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+}
+
+.firefly-trail {
+  position: fixed;
+  pointer-events: none;
+  z-index: 999999;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--firefly-primary) 0%, transparent 70%);
+  box-shadow: 0 0 10px var(--firefly-primary), 
+              0 0 20px var(--firefly-glow-strong),
+              0 0 30px var(--firefly-glow);
+  animation: trail-fade 0.8s ease-out forwards;
+}
+
+@keyframes trail-fade {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.1);
+  }
+}
+
+.firefly-ambient {
+  position: fixed;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--firefly-primary);
+  box-shadow: 0 0 6px var(--firefly-primary), 
+              0 0 12px var(--firefly-glow-strong);
+  pointer-events: none;
+  z-index: 999997;
+  animation: ambient-float 4s ease-in-out infinite;
+}
+
+@keyframes ambient-float {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.6;
+  }
+  25% {
+    transform: translate(20px, -30px) scale(1.2);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-10px, -60px) scale(0.8);
+    opacity: 0.4;
+  }
+  75% {
+    transform: translate(-30px, -20px) scale(1.1);
+    opacity: 0.8;
+  }
+}

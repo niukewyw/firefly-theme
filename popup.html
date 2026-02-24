@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>流萤主题设置</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      width: 320px;
+      padding: 20px;
+      background: linear-gradient(135deg, #0a1a0a 0%, #1a2a1a 100%);
+      font-family: 'Microsoft YaHei', sans-serif;
+      color: #00ff88;
+      position: relative;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 50% 30%, rgba(0, 255, 136, 0.1) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .header h1 {
+      font-size: 24px;
+      margin-bottom: 5px;
+      text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+    }
+
+    .header p {
+      font-size: 12px;
+      color: #66ffaa;
+      opacity: 0.8;
+    }
+
+    .settings {
+      position: relative;
+      z-index: 1;
+    }
+
+    .setting-item {
+      margin-bottom: 15px;
+    }
+
+    .setting-item label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 5px;
+      color: #66ffaa;
+    }
+
+    .setting-item input[type="range"] {
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: #1a3a1a;
+      outline: none;
+      -webkit-appearance: none;
+    }
+
+    .setting-item input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #00ff88;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+    }
+
+    .setting-item input[type="color"] {
+      width: 100%;
+      height: 35px;
+      border: none;
+      border-radius: 5px;
+      background: #1a3a1a;
+      cursor: pointer;
+    }
+
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .toggle {
+      position: relative;
+      width: 50px;
+      height: 26px;
+      background: #1a3a1a;
+      border-radius: 13px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .toggle.active {
+      background: #00ff88;
+    }
+
+    .toggle::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #fff;
+      transition: all 0.3s ease;
+    }
+
+    .toggle.active::after {
+      left: 27px;
+    }
+
+    .footer {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 11px;
+      color: #66ffaa;
+      opacity: 0.6;
+      position: relative;
+      z-index: 1;
+    }
+
+    .firefly-decoration {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #00ff88;
+      box-shadow: 0 0 8px #00ff88;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translate(0, 0);
+        opacity: 0.6;
+      }
+      50% {
+        transform: translate(10px, -20px);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="firefly-decoration" style="top: 10%; left: 10%;"></div>
+  <div class="firefly-decoration" style="top: 20%; right: 15%; animation-delay: 1s;"></div>
+  <div class="firefly-decoration" style="bottom: 30%; left: 20%; animation-delay: 2s;"></div>
+
+  <div class="header">
+    <h1>✨ 流萤主题</h1>
+    <p>让流萤的光芒陪伴你的每一次浏览</p>
+  </div>
+
+  <div class="settings">
+    <div class="setting-item">
+      <div class="toggle-container">
+        <label>启用萤火虫效果</label>
+        <div class="toggle active" id="fireflyToggle"></div>
+      </div>
+    </div>
+
+    <div class="setting-item">
+      <label>光点亮度</label>
+      <input type="range" id="brightnessSlider" min="0.2" max="1" step="0.1" value="0.8">
+    </div>
+
+    <div class="setting-item">
+      <label>拖尾长度</label>
+      <input type="range" id="trailLengthSlider" min="0.3" max="1.5" step="0.1" value="0.8">
+    </div>
+
+    <div class="setting-item">
+      <label>背景透明度</label>
+      <input type="range" id="backgroundOpacitySlider" min="0" max="0.5" step="0.05" value="0.15">
+    </div>
+
+    <div class="setting-item">
+      <label>主题颜色</label>
+      <input type="color" id="colorPicker" value="#00ff88">
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>为《崩坏：星穹铁道》流萤制作</p>
+  </div>
+
+  <script>
+    const fireflyToggle = document.getElementById('fireflyToggle');
+    const brightnessSlider = document.getElementById('brightnessSlider');
+    const trailLengthSlider = document.getElementById('trailLengthSlider');
+    const backgroundOpacitySlider = document.getElementById('backgroundOpacitySlider');
+    const colorPicker = document.getElementById('colorPicker');
+
+    fireflyToggle.addEventListener('click', () => {
+      fireflyToggle.classList.toggle('active');
+      chrome.storage.local.set({ fireflyEnabled: fireflyToggle.classList.contains('active') });
+    });
+
+    brightnessSlider.addEventListener('input', () => {
+      chrome.storage.local.set({ brightness: brightnessSlider.value });
+    });
+
+    trailLengthSlider.addEventListener('input', () => {
+      chrome.storage.local.set({ trailLength: trailLengthSlider.value });
+    });
+
+    backgroundOpacitySlider.addEventListener('input', () => {
+      chrome.storage.local.set({ backgroundOpacity: backgroundOpacitySlider.value });
+    });
+
+    colorPicker.addEventListener('input', () => {
+      chrome.storage.local.set({ themeColor: colorPicker.value });
+    });
+
+    chrome.storage.local.get(['fireflyEnabled', 'brightness', 'trailLength', 'backgroundOpacity', 'themeColor'], (result) => {
+      if (result.fireflyEnabled !== undefined) {
+        fireflyToggle.classList.toggle('active', result.fireflyEnabled);
+      }
+      if (result.brightness !== undefined) {
+        brightnessSlider.value = result.brightness;
+      }
+      if (result.trailLength !== undefined) {
+        trailLengthSlider.value = result.trailLength;
+      }
+      if (result.backgroundOpacity !== undefined) {
+        backgroundOpacitySlider.value = result.backgroundOpacity;
+      }
+      if (result.themeColor !== undefined) {
+        colorPicker.value = result.themeColor;
+      }
+    });
+  </script>
+</body>
+</html>
