@@ -8,18 +8,13 @@
 [![Chrome](https://img.shields.io/badge/Chrome-88%2B-brightgreen.svg)](https://www.google.com/chrome/)
 [![Firefox](https://img.shields.io/badge/Firefox-78%2B-orange.svg)](https://www.mozilla.org/firefox/)
 [![Edge](https://img.shields.io/badge/Edge-88%2B-blue.svg)](https://www.microsoft.com/edge)
+[![Zen](https://img.shields.io/badge/Zen-Supported-purple.svg)](https://zen-browser.app/)
 
 为《崩坏：星穹铁道》中的角色"流萤"打造的浏览器主题插件，以她标志性的萤光绿为色调，带来沉浸式的浏览体验。
 
-## 🖼️ 效果展示
+**开箱即用，无需任何配置！**
 
-### 测试页面效果
-![Figure 1 - 测试页面效果](figure1.png)
-
-### 浏览器集成效果
-![Figure 2 - 浏览器集成效果](figure2.png)
-
-[功能特性](#功能特性) • [安装方法](#安装方法) • [使用说明](#使用说明) • [预览效果](#预览效果) • [贡献指南](#贡献指南)
+[功能特性](#功能特性) • [安装方法](#安装方法) • [使用说明](#使用说明) • [贡献指南](#贡献指南)
 
 </div>
 
@@ -28,6 +23,13 @@
 ## 📖 项目简介
 
 流萤主题浏览器插件是一款为《崩坏：星穹铁道》粉丝打造的浏览器扩展，将流萤标志性的萤光绿色调带入你的浏览体验。插件通过 Canvas 渲染和 CSS 动态样式，实现了流畅的萤火虫光点拖尾效果和环境粒子系统，让每一次网页浏览都充满梦幻氛围。
+
+### 🎯 开箱即用
+
+- **Chrome/Edge** - 直接加载项目文件夹即可
+- **Firefox/Zen** - 使用预构建的 `.xpi` 文件一键安装
+- **无需配置** - 不需要 Node.js、npm 或任何构建工具
+- **即装即用** - 下载后立即体验流萤的光芒
 
 ### 🎯 设计理念
 
@@ -63,18 +65,6 @@
 - 🖼️ **背景透明度** - 调整背景图片的透明度（0-50%）
 - 🎨 **主题颜色** - 自定义主题颜色，不限于萤光绿
 
-### 背景图片
-
-插件支持自定义半透明背景图片，让浏览体验更具氛围感：
-
-- 将你喜欢的图片命名为 `background.png`
-- 放入 `images` 文件夹
-- 建议尺寸：1920×1080 或更大
-- 支持格式：PNG（推荐，支持透明度）
-- 可在设置面板中调整背景透明度
-
-**注意**：默认包含背景图片，也可以自行更换。如果不需要背景，可将透明度设置为 0%。
-
 ---
 
 ## 🚀 安装方法
@@ -105,13 +95,17 @@ cd firefly-theme
 
 #### Firefox/Zen 浏览器
 
-1. 下载 `firefly-theme-1.0.0.xpi` 文件
-2. 打开浏览器，访问 `about:addons`
-3. 点击"从文件安装附加组件"
-4. 选择下载的 `.xpi` 文件
-5. 插件安装完成！
+**推荐方式：临时加载（已验证可行）**
 
-**注意**：Firefox/Zen 浏览器使用 Manifest V2 格式，已包含在项目中。
+1. 打开浏览器，访问 `about:debugging#/runtime/this-firefox`
+2. 点击"临时载入附加组件"
+3. 选择项目中的 `firefly-theme-1.0.0.xpi` 文件
+4. 插件加载完成！
+
+**注意**：
+- ✅ 临时加载支持直接安装 `.xpi` 文件
+- ⚠️ 正式安装（about:addons）可能对未签名的 `.xpi` 文件有限制
+- 🔄 如需重新加载，暂时只能重新执行临时加载步骤
 
 ---
 
@@ -173,8 +167,8 @@ start test.html
 
 ```
 firefly-theme/
-├── manifest.json          # Chrome/Edge 配置（Manifest V3）
-├── manifest_v2.json      # Firefox/Zen 配置（Manifest V2）
+├── manifest.json          # Chrome/Edge 插件配置（Manifest V3）
+├── manifest_v2.json       # Firefox/Zen 插件配置（Manifest V2）
 ├── background.js          # 后台脚本
 ├── content.js             # 内容脚本（主要功能实现）
 ├── styles.css             # 样式文件
@@ -183,6 +177,9 @@ firefly-theme/
 ├── README.md              # 项目说明文档
 ├── LICENSE                # MIT 许可证
 ├── CONTRIBUTING.md        # 贡献指南
+├── figure1.png            # 效果展示图 1
+├── figure2.png            # 效果展示图 2
+├── firefly-theme-1.0.0.xpi  # Firefox/Zen 安装包（开箱即用）
 ├── icons/                 # 图标文件夹
 │   ├── icon.svg           # SVG 源图标
 │   ├── icon16.png         # 16×16 图标
@@ -191,8 +188,6 @@ firefly-theme/
 └── images/                # 背景图片文件夹
     ├── README.md          # 背景图片说明
     └── background.png     # 背景图片（可自行更换）
-
-**Firefox/Zen 用户**：直接下载 `firefly-theme-1.0.0.xpi` 文件安装即可
 ```
 
 ---
@@ -206,6 +201,12 @@ firefly-theme/
 - **RequestAnimationFrame** - 使用浏览器原生 API 实现流畅动画
 - **Content Script** - 注入到所有页面，实现全局效果
 
+### 跨浏览器支持
+
+- **Chrome/Edge** - 使用 Manifest V3 + `service_worker`
+- **Firefox/Zen** - 使用 Manifest V2 + `background.scripts`
+- **预构建安装包** - 包含 `.xpi` 文件，开箱即用
+
 ### 性能优化
 
 - **批量渲染** - 使用 Canvas 批量绘制，减少 DOM 操作
@@ -215,88 +216,13 @@ firefly-theme/
 
 ### 浏览器兼容性
 
-| 浏览器 | 最低版本 | 安装方式 | 状态 |
-|--------|----------|----------|------|
-| Chrome | 88+ | 加载文件夹 | ✅ 完全支持 |
-| Edge | 88+ | 加载文件夹 | ✅ 完全支持 |
-| Firefox | 78+ | .xpi 文件 | ✅ 完全支持 |
-| Zen | 任意版本 | .xpi 文件 | ✅ 完全支持 |
-| Safari | 15+ | 不支持 | ⚠️ 部分支持 |
-| Opera | 74+ | 加载文件夹 | ✅ 完全支持 |
-
-**注意**：
-- Chrome/Edge 使用 Manifest V3 格式（`manifest.json`）
-- Firefox/Zen 使用 Manifest V2 格式（`manifest_v2.json`）
-- 项目已包含两个版本的 manifest 文件，开箱即用
-
----
-
-## ⚙️ 自定义配置
-
-你可以通过修改 `content.js` 中的 `config` 对象来自定义默认设置：
-
-```javascript
-const config = {
-  trailColor: '#00ff88',        // 拖尾颜色
-  trailSize: 8,                 // 拖尾大小（像素）
-  trailOpacity: 0.8,            // 拖尾透明度（0-1）
-  trailLifetime: 800,           // 拖尾持续时间（毫秒）
-  ambientParticleCount: 15,     // 环境粒子数量
-  ambientColor: '#00ff88',      // 环境粒子颜色
-  glowIntensity: 0.5            // 光晕强度（0-1）
-};
-```
-
-### 配置说明
-
-| 参数 | 类型 | 默认值 | 说明 |
-|------|------|--------|------|
-| `trailColor` | string | `'#00ff88'` | 拖尾粒子的颜色 |
-| `trailSize` | number | `8` | 拖尾粒子的大小 |
-| `trailOpacity` | number | `0.8` | 拖尾粒子的透明度 |
-| `trailLifetime` | number | `800` | 拖尾粒子的生命周期（毫秒） |
-| `ambientParticleCount` | number | `15` | 环境粒子的数量 |
-| `ambientColor` | string | `'#00ff88'` | 环境粒子的颜色 |
-| `glowIntensity` | number | `0.5` | 光晕效果的强度 |
-
----
-
-## 🐛 已知问题
-
-- 某些网站可能会阻止 Canvas 或 CSS 注入
-- 在性能较低的设备上可能需要减少粒子数量
-- Safari 浏览器的部分 CSS 效果可能不完全兼容
-- 某些使用 Shadow DOM 的网站可能无法正确应用样式
-
----
-
-## 🤝 贡献指南
-
-欢迎贡献代码、报告问题或提出建议！
-
-### 如何贡献
-
-1. Fork 本仓库
-2. 创建特性分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 开启 Pull Request
-
-### 开发指南
-
-1. 克隆仓库并安装依赖（如有）
-2. 修改代码后，使用 `test.html` 测试效果
-3. 确保代码风格一致，添加必要的注释
-4. 测试在不同浏览器中的兼容性
-
-### 报告问题
-
-如果遇到问题，请在 [Issues](https://github.com/yourusername/firefly-theme/issues) 中提交，包含：
-
-- 问题描述
-- 复现步骤
-- 浏览器版本和操作系统
-- 截图或错误信息（如有）
+| 浏览器 | 最低版本 | 状态 |
+|--------|----------|------|
+| Chrome | 88+ | ✅ 完全支持 |
+| Edge | 88+ | ✅ 完全支持 |
+| Firefox | 78+ | ✅ 完全支持 |
+| Safari | 15+ | ⚠️ 部分支持 |
+| Opera | 74+ | ✅ 完全支持 |
 
 ---
 
@@ -309,6 +235,9 @@ const config = {
 - 🎨 添加动态主题色渲染
 - ⚙️ 支持自定义设置
 - 🎯 全局适配所有网页
+- 🌌 添加半透明背景图片支持
+- 📦 包含预构建的 Firefox/Zen .xpi 安装包
+- 🎯 开箱即用，无需配置
 
 ---
 
