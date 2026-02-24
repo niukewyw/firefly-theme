@@ -103,12 +103,15 @@ cd firefly-theme
 4. 选择项目的文件夹
 5. 插件安装完成！
 
-#### Firefox 浏览器
+#### Firefox/Zen 浏览器
 
-1. 打开浏览器，访问 `about:debugging#/runtime/this-firefox`
-2. 点击"临时载入附加组件"
-3. 选择项目中的 `manifest.json` 文件
-4. 插件加载完成！
+1. 下载 `firefly-theme-1.0.0.xpi` 文件
+2. 打开浏览器，访问 `about:addons`
+3. 点击"从文件安装附加组件"
+4. 选择下载的 `.xpi` 文件
+5. 插件安装完成！
+
+**注意**：Firefox/Zen 浏览器使用 Manifest V2 格式，已包含在项目中。
 
 ---
 
@@ -170,7 +173,8 @@ start test.html
 
 ```
 firefly-theme/
-├── manifest.json          # 插件配置文件（Manifest V3）
+├── manifest.json          # Chrome/Edge 配置（Manifest V3）
+├── manifest_v2.json      # Firefox/Zen 配置（Manifest V2）
 ├── background.js          # 后台脚本
 ├── content.js             # 内容脚本（主要功能实现）
 ├── styles.css             # 样式文件
@@ -187,6 +191,8 @@ firefly-theme/
 └── images/                # 背景图片文件夹
     ├── README.md          # 背景图片说明
     └── background.png     # 背景图片（可自行更换）
+
+**Firefox/Zen 用户**：直接下载 `firefly-theme-1.0.0.xpi` 文件安装即可
 ```
 
 ---
@@ -209,13 +215,19 @@ firefly-theme/
 
 ### 浏览器兼容性
 
-| 浏览器 | 最低版本 | 状态 |
-|--------|----------|------|
-| Chrome | 88+ | ✅ 完全支持 |
-| Edge | 88+ | ✅ 完全支持 |
-| Firefox | 78+ | ✅ 完全支持 |
-| Safari | 15+ | ⚠️ 部分支持 |
-| Opera | 74+ | ✅ 完全支持 |
+| 浏览器 | 最低版本 | 安装方式 | 状态 |
+|--------|----------|----------|------|
+| Chrome | 88+ | 加载文件夹 | ✅ 完全支持 |
+| Edge | 88+ | 加载文件夹 | ✅ 完全支持 |
+| Firefox | 78+ | .xpi 文件 | ✅ 完全支持 |
+| Zen | 任意版本 | .xpi 文件 | ✅ 完全支持 |
+| Safari | 15+ | 不支持 | ⚠️ 部分支持 |
+| Opera | 74+ | 加载文件夹 | ✅ 完全支持 |
+
+**注意**：
+- Chrome/Edge 使用 Manifest V3 格式（`manifest.json`）
+- Firefox/Zen 使用 Manifest V2 格式（`manifest_v2.json`）
+- 项目已包含两个版本的 manifest 文件，开箱即用
 
 ---
 
