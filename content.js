@@ -4,6 +4,7 @@
   console.log('🌟 Firefly Theme: Content script loaded');
 
   const config = {
+    fireflyEnabled: true,
     trailColor: '#00ff88',
     trailSize: 8,
     trailOpacity: 0.8,
@@ -21,17 +22,28 @@
   let trailParticles = [];
   let ambientParticles = [];
   let animationId = null;
+  let isRunning = false;
 
   function loadSettings() {
-    chrome.storage.local.get(['brightness', 'trailLength', 'backgroundOpacity', 'themeColor'], (result) => {
+    console.log('📖 Loading settings from storage...');
+    chrome.storage.local.get(['fireflyEnabled', 'brightness', 'trailLength', 'backgroundOpacity', 'themeColor'], (result) => {
+      console.log('📦 Settings loaded:', result);
+      
+      if (result.fireflyEnabled !== undefined) {
+        config.fireflyEnabled = result.fireflyEnabled;
+        console.log('✅ Firefly enabled:', config.fireflyEnabled);
+      }
       if (result.brightness !== undefined) {
         config.trailOpacity = parseFloat(result.brightness);
+        console.log('✅ Trail opacity:', config.trailOpacity);
       }
       if (result.trailLength !== undefined) {
         config.trailLifetime = parseFloat(result.trailLength) * 1000;
+        console.log('✅ Trail lifetime:', config.trailLifetime);
       }
       if (result.backgroundOpacity !== undefined) {
         document.documentElement.style.setProperty('--background-opacity', result.backgroundOpacity);
+        console.log('✅ Background opacity:', result.backgroundOpacity);
       }
       if (result.themeColor !== undefined) {
         config.trailColor = result.themeColor;
@@ -39,6 +51,19 @@
         document.documentElement.style.setProperty('--firefly-primary', result.themeColor);
         document.documentElement.style.setProperty('--firefly-glow', `${result.themeColor}4D`);
         document.documentElement.style.setProperty('--firefly-glow-strong', `${result.themeColor}99`);
+        console.log('✅ Theme color:', result.themeColor);
+      }
+      
+      console.log('🔧 Final config:', config);
+      
+      if (config.fireflyEnabled && !isRunning) {
+        console.log('🚀 Initializing firefly effect...');
+        init();
+      } else if (!config.fireflyEnabled && isRunning) {
+        console.log('🛑 Stopping firefly effect...');
+        cleanup();
+      } else if (config.fireflyEnabled && isRunning) {
+        console.log('✅ Firefly effect already running');
       }
     });
   }
@@ -47,6 +72,14 @@
 
   chrome.storage.onChanged.addListener((changes, namespace) => {
     if (namespace === 'local') {
+      if (changes.fireflyEnabled) {
+        config.fireflyEnabled = changes.fireflyEnabled.newValue;
+        if (config.fireflyEnabled && !isRunning) {
+          init();
+        } else if (!config.fireflyEnabled && isRunning) {
+          cleanup();
+        }
+      }
       if (changes.brightness) {
         config.trailOpacity = parseFloat(changes.brightness.newValue);
       }
@@ -224,6 +257,11 @@
   function init() {
     console.log('🌟 Firefly Theme: Initializing...');
     
+    if (isRunning) {
+      console.log('Already running, skipping init');
+      return;
+    }
+    
     const canvas = document.createElement('canvas');
     canvas.id = 'firefly-canvas';
     canvas.className = 'firefly-canvas';
@@ -272,9 +310,13 @@
 
     lastTime = performance.now();
     animationId = requestAnimationFrame(animate);
+    isRunning = true;
+    console.log('✅ Firefly Theme: Initialized successfully');
   }
 
   function cleanup() {
+    console.log('🧹 Firefly Theme: Cleaning up...');
+    
     if (animationId) {
       cancelAnimationFrame(animationId);
     }
@@ -294,12 +336,16 @@
 
     trailParticles = [];
     ambientParticles = [];
+    isRunning = false;
+    console.log('✅ Firefly Theme: Cleaned up successfully');
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', () => {
+      loadSettings();
+    });
   } else {
-    init();
+    loadSettings();
   }
 
   window.addEventListener('beforeunload', cleanup);

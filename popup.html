@@ -206,51 +206,6 @@
     <p>为《崩坏：星穹铁道》流萤制作</p>
   </div>
 
-  <script>
-    const fireflyToggle = document.getElementById('fireflyToggle');
-    const brightnessSlider = document.getElementById('brightnessSlider');
-    const trailLengthSlider = document.getElementById('trailLengthSlider');
-    const backgroundOpacitySlider = document.getElementById('backgroundOpacitySlider');
-    const colorPicker = document.getElementById('colorPicker');
-
-    fireflyToggle.addEventListener('click', () => {
-      fireflyToggle.classList.toggle('active');
-      chrome.storage.local.set({ fireflyEnabled: fireflyToggle.classList.contains('active') });
-    });
-
-    brightnessSlider.addEventListener('input', () => {
-      chrome.storage.local.set({ brightness: brightnessSlider.value });
-    });
-
-    trailLengthSlider.addEventListener('input', () => {
-      chrome.storage.local.set({ trailLength: trailLengthSlider.value });
-    });
-
-    backgroundOpacitySlider.addEventListener('input', () => {
-      chrome.storage.local.set({ backgroundOpacity: backgroundOpacitySlider.value });
-    });
-
-    colorPicker.addEventListener('input', () => {
-      chrome.storage.local.set({ themeColor: colorPicker.value });
-    });
-
-    chrome.storage.local.get(['fireflyEnabled', 'brightness', 'trailLength', 'backgroundOpacity', 'themeColor'], (result) => {
-      if (result.fireflyEnabled !== undefined) {
-        fireflyToggle.classList.toggle('active', result.fireflyEnabled);
-      }
-      if (result.brightness !== undefined) {
-        brightnessSlider.value = result.brightness;
-      }
-      if (result.trailLength !== undefined) {
-        trailLengthSlider.value = result.trailLength;
-      }
-      if (result.backgroundOpacity !== undefined) {
-        backgroundOpacitySlider.value = result.backgroundOpacity;
-      }
-      if (result.themeColor !== undefined) {
-        colorPicker.value = result.themeColor;
-      }
-    });
-  </script>
+  <script src="popup.js"></script>
 </body>
 </html>
