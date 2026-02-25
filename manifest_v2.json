@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "流萤 - 萤火虫主题",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "以流萤的标志性萤光绿为色调，为浏览器带来动态主题和萤火虫光点拖尾效果",
   "permissions": [
     "storage",
