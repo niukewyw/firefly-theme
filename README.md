@@ -107,13 +107,14 @@ cd firefly-theme
 
 1. 打开浏览器，访问 `about:debugging#/runtime/this-firefox`
 2. 点击"临时载入附加组件"
-3. 选择项目中的 `firefly-theme-1.0.0.xpi` 文件
+3. 选择项目中的 `firefly-theme-1.0.1.xpi` 文件
 4. 插件加载完成！
 
 **注意**：
 - ✅ 临时加载支持直接安装 `.xpi` 文件
 - ⚠️ 正式安装（about:addons）可能对未签名的 `.xpi` 文件有限制
-- 🔄 如需重新加载，暂时只能重新执行临时加载步骤
+- 💡 临时加载的插件在浏览器重启后仍然有效
+- 🔄 如需重新加载，只需重新执行临时加载步骤
 
 ---
 
@@ -188,7 +189,7 @@ firefly-theme/
 ├── CONTRIBUTING.md        # 贡献指南
 ├── figure1.png            # 效果展示图 1
 ├── figure2.png            # 效果展示图 2
-├── firefly-theme-1.0.0.xpi  # Firefox/Zen 安装包（开箱即用）
+├── firefly-theme-1.0.1.xpi  # Firefox/Zen 安装包（开箱即用）
 ├── icons/                 # 图标文件夹
 │   ├── icon.svg           # SVG 源图标
 │   ├── icon16.png         # 16×16 图标
