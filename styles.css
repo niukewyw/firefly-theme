@@ -7,14 +7,6 @@
   --background-opacity: 0.15;
 }
 
-html {
-  filter: brightness(1.05) saturate(1.1);
-}
-
-body {
-  position: relative;
-}
-
 .firefly-background {
   position: fixed;
   top: 0;
@@ -22,7 +14,7 @@ body {
   right: 0;
   bottom: 0;
   pointer-events: none;
-  z-index: 999996;
+  z-index: 2147483647;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -31,15 +23,14 @@ body {
   transition: opacity 0.5s ease;
 }
 
-body::before {
-  content: '';
+.firefly-mouse-glow {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   pointer-events: none;
-  z-index: 999999;
+  z-index: 2147483647;
   background: radial-gradient(ellipse at var(--mouse-x, 50%) var(--mouse-y, 50%), 
     var(--firefly-glow) 0%, 
     transparent 40%);

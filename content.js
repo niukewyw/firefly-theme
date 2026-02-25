@@ -299,6 +299,17 @@
       console.log('Background element already exists');
     }
 
+    let mouseGlow = document.querySelector('.firefly-mouse-glow');
+    
+    if (!mouseGlow) {
+      mouseGlow = document.createElement('div');
+      mouseGlow.className = 'firefly-mouse-glow';
+      document.body.appendChild(mouseGlow);
+      console.log('✅ Mouse glow element created');
+    } else {
+      console.log('Mouse glow element already exists');
+    }
+
     resizeCanvas();
 
     for (let i = 0; i < config.ambientParticleCount; i++) {
@@ -332,6 +343,11 @@
     const background = document.querySelector('.firefly-background');
     if (background) {
       background.remove();
+    }
+
+    const mouseGlow = document.querySelector('.firefly-mouse-glow');
+    if (mouseGlow) {
+      mouseGlow.remove();
     }
 
     trailParticles = [];

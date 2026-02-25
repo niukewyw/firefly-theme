@@ -107,13 +107,68 @@ cd firefly-theme
 
 1. 打开浏览器，访问 `about:debugging#/runtime/this-firefox`
 2. 点击"临时载入附加组件"
-3. 选择项目中的 `firefly-theme-1.0.1.xpi` 文件
+3. 选择项目中的 `firefly-theme-1.0.2.xpi` 文件
 4. 插件加载完成！
 
 **注意**：
 - ✅ 临时加载支持直接安装 `.xpi` 文件
 - ⚠️ 正式安装（about:addons）可能对未签名的 `.xpi` 文件有限制
-- 🔄 重新加载，只能重新执行临时加载步骤
+- 🔄 如需重新加载，只需重新执行临时加载步骤
+
+---
+
+## 🔨 构建 Firefox/Zen 扩展
+
+如果需要重新构建 Firefox/Zen 的 `.xpi` 文件，可以使用提供的构建脚本。
+
+### 使用构建脚本（推荐）
+
+项目包含 `build-firefox.ps1` 脚本，可以自动完成构建过程：
+
+```powershell
+# 运行构建脚本
+.\build-firefox.ps1
+```
+
+脚本会自动执行以下步骤：
+1. ✅ 备份原始的 `manifest.json`
+2. ✅ 使用 `manifest_v2.json` 替换 `manifest.json`
+3. ✅ 运行 `web-ext build` 生成 `.xpi` 文件
+4. ✅ 恢复原始的 `manifest.json`
+
+### 手动构建
+
+如果需要手动构建，请按照以下步骤操作：
+
+```powershell
+# 1. 备份原始配置
+Copy-Item "manifest.json" "manifest.json.backup"
+
+# 2. 使用 Manifest V2 配置
+Copy-Item "manifest_v2.json" "manifest.json" -Force
+
+# 3. 构建 xpi 文件
+web-ext build --overwrite-dest --filename=firefly-theme-1.0.2.xpi
+
+# 4. 恢复原始配置
+Copy-Item "manifest.json.backup" "manifest.json" -Force
+Remove-Item "manifest.json.backup"
+```
+
+### 前置要求
+
+构建脚本需要安装 `web-ext` 工具：
+
+```bash
+npm install --global web-ext
+```
+
+### 构建输出
+
+构建成功后，`.xpi` 文件会生成在：
+```
+web-ext-artifacts/firefly-theme-1.0.2.xpi
+```
 
 ---
 
@@ -183,12 +238,13 @@ firefly-theme/
 ├── popup.js              # 设置弹窗脚本
 ├── styles.css             # 样式文件
 ├── test.html              # 测试页面
+├── build-firefox.ps1      # Firefox/Zen 构建脚本
 ├── README.md              # 项目说明文档
 ├── LICENSE                # MIT 许可证
 ├── CONTRIBUTING.md        # 贡献指南
 ├── figure1.png            # 效果展示图 1
 ├── figure2.png            # 效果展示图 2
-├── firefly-theme-1.0.1.xpi  # Firefox/Zen 安装包（开箱即用）
+├── firefly-theme-1.0.2.xpi  # Firefox/Zen 安装包（开箱即用）
 ├── icons/                 # 图标文件夹
 │   ├── icon.svg           # SVG 源图标
 │   ├── icon16.png         # 16×16 图标
@@ -236,6 +292,22 @@ firefly-theme/
 ---
 
 ## 📝 更新日志
+
+### v1.0.2 (2026-02-26)
+
+- 🐛 **修复显示异常问题**
+  - 修复部分网页内容被背景图片覆盖的问题
+  - 移除干扰网页布局的 CSS 样式
+  - 修复 z-index 层级问题
+- 🔧 **技术改进**
+  - 将 `body::before` 伪元素改为独立的 `.firefly-mouse-glow` 元素
+  - 移除 `html` 和 `body` 的全局样式干扰
+  - 使用最大 z-index 值确保效果在最上层但不影响交互
+  - 优化元素创建和清理逻辑
+- ✅ **兼容性提升**
+  - 确保所有网页内容正常显示
+  - 背景图片和光晕效果不影响网页交互
+  - 插件效果与网页内容完全分离
 
 ### v1.0.1 (2026-02-25)
 
