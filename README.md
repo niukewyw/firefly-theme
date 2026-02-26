@@ -107,7 +107,7 @@ cd firefly-theme
 
 1. 打开浏览器，访问 `about:debugging#/runtime/this-firefox`
 2. 点击"临时载入附加组件"
-3. 选择项目中的 `firefly-theme-1.0.2.xpi` 文件
+3. 选择项目中的 `firefly-theme-1.0.3.xpi` 文件
 4. 插件加载完成！
 
 **注意**：
@@ -148,7 +148,7 @@ Copy-Item "manifest.json" "manifest.json.backup"
 Copy-Item "manifest_v2.json" "manifest.json" -Force
 
 # 3. 构建 xpi 文件
-web-ext build --overwrite-dest --filename=firefly-theme-1.0.2.xpi
+web-ext build --overwrite-dest --filename=firefly-theme-1.0.3.xpi
 
 # 4. 恢复原始配置
 Copy-Item "manifest.json.backup" "manifest.json" -Force
@@ -167,7 +167,7 @@ npm install --global web-ext
 
 构建成功后，`.xpi` 文件会生成在：
 ```
-web-ext-artifacts/firefly-theme-1.0.2.xpi
+web-ext-artifacts/firefly-theme-1.0.3.xpi
 ```
 
 ---
@@ -244,7 +244,7 @@ firefly-theme/
 ├── CONTRIBUTING.md        # 贡献指南
 ├── figure1.png            # 效果展示图 1
 ├── figure2.png            # 效果展示图 2
-├── firefly-theme-1.0.2.xpi  # Firefox/Zen 安装包（开箱即用）
+├── firefly-theme-1.0.3.xpi  # Firefox/Zen 安装包（开箱即用）
 ├── icons/                 # 图标文件夹
 │   ├── icon.svg           # SVG 源图标
 │   ├── icon16.png         # 16×16 图标
@@ -292,6 +292,23 @@ firefly-theme/
 ---
 
 ## 📝 更新日志
+
+### v1.0.3 (2026-02-26)
+
+- ⚡ **性能优化**
+  - 限制帧率为 30 FPS，降低 CPU 和 GPU 使用率
+  - 优化 Canvas 渲染，减少不必要的绘制操作
+  - 简化粒子渐变效果，减少 GPU 负载
+  - 添加帧间隔控制，避免过度渲染
+- 🔧 **技术改进**
+  - 使用 `alpha: true` 优化 Canvas 上下文
+  - 减少径向渐变的颜色节点数量
+  - 跳过不可见粒子的渲染
+  - 添加 `hexToRgb` 辅助函数支持动态颜色
+- ✅ **兼容性提升**
+  - 显著降低低端设备的资源占用
+  - 减少风扇噪音和发热问题
+  - 保持视觉效果的同时优化性能
 
 ### v1.0.2 (2026-02-26)
 

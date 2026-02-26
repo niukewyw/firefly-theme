@@ -11,7 +11,9 @@
     trailLifetime: 800,
     ambientParticleCount: 15,
     ambientColor: '#00ff88',
-    glowIntensity: 0.5
+    glowIntensity: 0.5,
+    targetFPS: 30,
+    frameInterval: 33
   };
 
   let mouseX = window.innerWidth / 2;
@@ -23,6 +25,8 @@
   let ambientParticles = [];
   let animationId = null;
   let isRunning = false;
+  let lastFrameTime = 0;
+  let frameCount = 0;
 
   function loadSettings() {
     console.log('📖 Loading settings from storage...');
@@ -195,54 +199,72 @@
     const canvas = document.getElementById('firefly-canvas');
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: true });
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     trailParticles.forEach(particle => {
+      if (particle.opacity <= 0.01) return;
+
+      ctx.beginPath();
+      ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${hexToRgb(particle.color)}, ${particle.opacity})`;
+      ctx.fill();
+
       const gradient = ctx.createRadialGradient(
         particle.x, particle.y, 0,
         particle.x, particle.y, particle.size * 2
       );
-      gradient.addColorStop(0, `rgba(0, 255, 136, ${particle.opacity})`);
-      gradient.addColorStop(0.5, `rgba(0, 255, 136, ${particle.opacity * 0.5})`);
+      gradient.addColorStop(0, `rgba(255, 255, 255, ${particle.opacity * 0.5})`);
+      gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+
+      ctx.beginPath();
+      ctx.arc(particle.x, particle.y, particle.size * 2, 0, Math.PI * 2);
+      ctx.fillStyle = gradient;
+      ctx.fill();
+    });
+
+    ambientParticles.forEach(particle => {
+      if (particle.currentOpacity <= 0.01) return;
+
+      const gradient = ctx.createRadialGradient(
+        particle.x, particle.y, 0,
+        particle.x, particle.y, particle.size * 2
+      );
+      gradient.addColorStop(0, `rgba(${hexToRgb(particle.color)}, ${particle.currentOpacity})`);
       gradient.addColorStop(1, 'rgba(0, 255, 136, 0)');
 
       ctx.beginPath();
       ctx.arc(particle.x, particle.y, particle.size * 2, 0, Math.PI * 2);
       ctx.fillStyle = gradient;
       ctx.fill();
-
-      ctx.beginPath();
-      ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(255, 255, 255, ${particle.opacity * 0.8})`;
-      ctx.fill();
     });
+  }
 
-    ambientParticles.forEach(particle => {
-      const gradient = ctx.createRadialGradient(
-        particle.x, particle.y, 0,
-        particle.x, particle.y, particle.size * 3
-      );
-      gradient.addColorStop(0, `rgba(0, 255, 136, ${particle.currentOpacity})`);
-      gradient.addColorStop(0.5, `rgba(0, 255, 136, ${particle.currentOpacity * 0.3})`);
-      gradient.addColorStop(1, 'rgba(0, 255, 136, 0)');
-
-      ctx.beginPath();
-      ctx.arc(particle.x, particle.y, particle.size * 3, 0, Math.PI * 2);
-      ctx.fillStyle = gradient;
-      ctx.fill();
-    });
+  function hexToRgb(hex) {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? 
+      `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : 
+      '0, 255, 136';
   }
 
   let lastTime = 0;
   function animate(currentTime) {
+    if (!lastTime) {
+      lastTime = currentTime;
+    }
+
     const deltaTime = currentTime - lastTime;
-    lastTime = currentTime;
-
-    updateTrailParticles(deltaTime);
-    updateAmbientParticles(deltaTime);
-    render();
-
+    
+    if (deltaTime >= config.frameInterval) {
+      lastTime = currentTime;
+      
+      updateTrailParticles(deltaTime);
+      updateAmbientParticles(deltaTime);
+      render();
+      
+      frameCount++;
+    }
+    
     animationId = requestAnimationFrame(animate);
   }
 

@@ -1,5 +1,5 @@
 Write-Host "========================================" -ForegroundColor Cyan
-Write-Host "  Building Firefox/Zen Extension v1.0.2" -ForegroundColor Cyan
+Write-Host "  Building Firefox/Zen Extension v1.0.3" -ForegroundColor Cyan
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
 
@@ -23,7 +23,7 @@ Write-Host ""
 
 # Step 3: Build with web-ext
 Write-Host "[3/4] Building with web-ext..." -ForegroundColor Yellow
-$buildResult = & web-ext build --overwrite-dest --filename=firefly-theme-1.0.2.xpi 2>&1
+$buildResult = & web-ext build --overwrite-dest --filename=firefly-theme-1.0.3.xpi 2>&1
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host ""
@@ -47,12 +47,12 @@ Write-Host "========================================" -ForegroundColor Cyan
 Write-Host "  Build completed successfully!" -ForegroundColor Green
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
-Write-Host "📦 Output: web-ext-artifacts\firefly-theme-1.0.2.xpi" -ForegroundColor Cyan
+Write-Host "📦 Output: web-ext-artifacts\firefly-theme-1.0.3.xpi" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "Now you can install it in Zen browser:" -ForegroundColor White
 Write-Host "  1. Open about:debugging#/runtime/this-firefox" -ForegroundColor White
 Write-Host "  2. Click 'Load Temporary Add-on'" -ForegroundColor White
-Write-Host "  3. Select web-ext-artifacts\firefly-theme-1.0.2.xpi" -ForegroundColor White
+Write-Host "  3. Select web-ext-artifacts\firefly-theme-1.0.3.xpi" -ForegroundColor White
 Write-Host ""
 
 function Restore-Manifest {
